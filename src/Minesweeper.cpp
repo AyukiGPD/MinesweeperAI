@@ -10,10 +10,9 @@ Minesweeper::Minesweeper()
 , _width(1)
 , _height(1)
 , _bombCount(1)
-, _isGameOver(false)
-, _isGameClear(false)
-, _isInitialized(false)
+, _gameStatus(Minesweeper::GameStatus::None)
 , _hoverIndex(-1)
+, _isHumanPlay(true)
 {
 }
 
@@ -120,19 +119,36 @@ void Minesweeper::draw()
 				default:
 					break;
 				}
+
+				if (_gameStatus == GameStatus::GameOver)
+				{
+					if (cell._isBomb)
+					{
+						ofSetColor(ofColor::white);
+						_imageBomb.draw(xCell, yCell, _cellSize, _cellSize);
+					}
+					else if (cell._bombCount > 0)
+					{
+						ofSetColor(ofColor::black);
+						_font.drawString(std::to_string(cell._bombCount), xCell + halfCellSize - 16, yCell + halfCellSize + 16);
+					}
+				}
 			}
 		}
 	}
 
-	if (_isGameOver == true)
+	switch (_gameStatus)
 	{
+	case GameStatus::GameOver:
 		ofSetColor(ofColor::white);
 		_font.drawString("GameOver", xSize + 32, 64);
-	}
-	else if (_isGameClear == true)
-	{
+		break;
+	case GameStatus::GameClear:
 		ofSetColor(ofColor::white);
 		_font.drawString("GameClear", xSize + 32, 64);
+		break;
+	default:
+		break;
 	}
 }
 
@@ -141,24 +157,42 @@ void Minesweeper::draw()
 /// </summary>
 void Minesweeper::exit()
 {
+	_imageBomb.clear();
+	_imageFlag.clear();
+	_imageHold.clear();
 	_cells.clear();
 }
 
 void Minesweeper::mouseMoved(int x, int y)
 {
+	if (_isHumanPlay == false)
+	{
+		return;
+	}
+
 	int index = GetCellIndex(x, y);
 	_hoverIndex = index;
 }
 
 void Minesweeper::mouseDragged(int x, int y, int button)
 {
+	if (_isHumanPlay == false)
+	{
+		return;
+	}
+
 	int index = GetCellIndex(x, y);
 	_hoverIndex = index;
 }
 
 void Minesweeper::mouseReleased(int x, int y, int button)
 {
-	if (_isGameOver || _isGameClear)
+	if (_isHumanPlay == false)
+	{
+		return;
+	}
+
+	if (_gameStatus == GameStatus::None || _gameStatus == GameStatus::GameOver || _gameStatus == GameStatus::GameClear)
 	{
 		ResetGame();
 		return;
@@ -181,6 +215,11 @@ void Minesweeper::mouseReleased(int x, int y, int button)
 
 void Minesweeper::mouseExited(int x, int y)
 {
+	if (_isHumanPlay == false)
+	{
+		return;
+	}
+
 	_hoverIndex = -1;
 }
 
@@ -219,15 +258,7 @@ void Minesweeper::SetMinesweeper(int width, int height, int bombCount)
 	std::vector<CellStatus> widthCells;
 	CellStatus status;
 	_cells.assign(cellCount, status);
-}
-
-/// <summary>
-/// ゲームオーバーフラグ
-/// </summary>
-/// <returns></returns>
-bool Minesweeper::IsGameOver() const
-{
-	return _isGameOver;
+	_gameStatus = GameStatus::Start;
 }
 
 /// <summary>
@@ -235,9 +266,6 @@ bool Minesweeper::IsGameOver() const
 /// </summary>
 void Minesweeper::ResetGame()
 {
-	_isGameOver = false;
-	_isGameClear = false;
-	_isInitialized = false;
 	SetMinesweeper(_width, _height, _bombCount);
 }
 
@@ -272,10 +300,28 @@ void Minesweeper::ClickCell(int x, int y, int button)
 /// セル情報の取得
 /// </summary>
 /// <returns></returns>
-std::vector<Minesweeper::CellStatus> Minesweeper::GetCellStatus() const
+const std::vector<Minesweeper::CellStatus>& Minesweeper::GetCellStatus() const
 {
-	std::vector<CellStatus> result(_cells);
-	return result;
+	return _cells;
+}
+
+/// <summary>
+/// ゲーム状況取得
+/// </summary>
+/// <returns></returns>
+Minesweeper::GameStatus Minesweeper::GetGameStatus() const
+{
+	return _gameStatus;
+}
+
+/// <summary>
+/// 人間がプレイするか
+/// </summary>
+/// <param name="isHuman"></param>
+void Minesweeper::SetIsHumanPlay(bool isHuman)
+{
+	_isHumanPlay = isHuman;
+	_hoverIndex = -1;
 }
 
 
@@ -397,7 +443,7 @@ void Minesweeper::OpenAroundCell(int cellIndex)
 /// </summary>
 void Minesweeper::SetGameOver()
 {
-	_isGameOver = true;
+	_gameStatus = GameStatus::GameOver;
 }
 
 /// <summary>
@@ -406,11 +452,12 @@ void Minesweeper::SetGameOver()
 /// <param name="index"></param>
 void Minesweeper::OpenCell(int index)
 {
-	if (_isInitialized == false)
+	if (_gameStatus == GameStatus::Start)
 	{
+		// TODO 時間計測開始
 		InitializeOpenCell(index);
 		SetBomb();
-		_isInitialized = true;
+		_gameStatus = GameStatus::Playing;
 	}
 
 	auto& cell = _cells[index];
@@ -429,7 +476,7 @@ void Minesweeper::OpenCell(int index)
 
 	if (CheckGameClear())
 	{
-		_isGameClear = true;
+		_gameStatus = GameStatus::GameClear;
 	}
 }
 

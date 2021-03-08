@@ -4,6 +4,15 @@
 class Minesweeper : public ofBaseApp
 {
 public:
+	enum class GameStatus : int
+	{
+		None,
+		Start,
+		Playing,
+		GameClear,
+		GameOver,
+	};
+
 	/// <summary>
 	/// セル表示ステータス
 	/// </summary>
@@ -50,10 +59,10 @@ private:
 
 	ofTrueTypeFont _font;	// 文字
 
-	bool _isGameOver;		// ゲームオーバーフラグ
-	bool _isGameClear;		// ゲームクリアフラグ
-	bool _isInitialized;	// 初期化処理済みフラグ
+	GameStatus _gameStatus;
 	int _hoverIndex;
+
+	bool _isHumanPlay;
 
 public:
 	/// <summary>
@@ -109,12 +118,6 @@ public:
 	void SetMinesweeper(int width, int height, int bombCount);
 
 	/// <summary>
-	/// ゲームオーバーフラグ
-	/// </summary>
-	/// <returns></returns>
-	bool IsGameOver() const;
-
-	/// <summary>
 	/// ゲームリセット
 	/// </summary>
 	void ResetGame();
@@ -131,7 +134,19 @@ public:
 	/// セル情報の取得
 	/// </summary>
 	/// <returns></returns>
-	std::vector<CellStatus> GetCellStatus() const;
+	const std::vector<CellStatus>& GetCellStatus() const;
+
+	/// <summary>
+	/// ゲーム状況取得
+	/// </summary>
+	/// <returns></returns>
+	GameStatus GetGameStatus() const;
+
+	/// <summary>
+	/// 人間がプレイするか
+	/// </summary>
+	/// <param name="isHuman"></param>
+	void SetIsHumanPlay(bool isHuman);
 
 private:
 	/// <summary>

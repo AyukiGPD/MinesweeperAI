@@ -22,6 +22,9 @@
     <ClCompile Include="src\Minesweeper.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\MinesweeperAI.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -45,6 +48,9 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\Minesweeper.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MinesweeperAI.h">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>

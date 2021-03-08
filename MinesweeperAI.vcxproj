@@ -33,11 +33,13 @@
     <ConfigurationType>Application</ConfigurationType>
     <CharacterSet>Unicode</CharacterSet>
     <PlatformToolset>v142</PlatformToolset>
+    <UseDebugLibraries>false</UseDebugLibraries>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <CharacterSet>Unicode</CharacterSet>
     <PlatformToolset>v142</PlatformToolset>
+    <UseDebugLibraries>false</UseDebugLibraries>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -185,6 +187,7 @@
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\MainSystem.cpp" />
     <ClCompile Include="src\Minesweeper.cpp" />
+    <ClCompile Include="src\MinesweeperAI.cpp" />
     <ClCompile Include="src\ofApp.cpp" />
     <ClCompile Include="src\Utility.cpp" />
   </ItemGroup>
@@ -193,6 +196,7 @@
     <ClInclude Include="src\Include.h" />
     <ClInclude Include="src\MainSystem.h" />
     <ClInclude Include="src\Minesweeper.h" />
+    <ClInclude Include="src\MinesweeperAI.h" />
     <ClInclude Include="src\ofApp.h" />
     <ClInclude Include="src\Utility.h" />
   </ItemGroup>

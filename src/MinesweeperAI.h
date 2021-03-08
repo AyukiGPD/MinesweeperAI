@@ -2,30 +2,24 @@
 #include "Include.h"
 
 class Minesweeper;
-class MinesweeperAI;
 
-class GameMain : public ofBaseApp
+class MinesweeperAI : public ofBaseApp
 {
-public:
-	const std::string MinesweeperId;			// マインスイーパーID
-	const std::string ArtificialIntelligenceId;	// AIのID
-
 private:
 	Minesweeper* _pMinesweeper;
-	MinesweeperAI* _pMinesweeperAI;
+
 
 public:
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
-	GameMain();
+	MinesweeperAI();
 
 	/// <summary>
 	/// デストラクタ
 	/// </summary>
-	virtual ~GameMain();
+	virtual ~MinesweeperAI();
 
-public:
 	/// <summary>
 	/// 初期化
 	/// </summary>
@@ -45,5 +39,12 @@ public:
 	/// 解放
 	/// </summary>
 	void exit();
+
+public:
+	/// <summary>
+	/// ゲーム設定
+	/// </summary>
+	/// <param name="pMinesweeper"></param>
+	void SetGameObject(Minesweeper* pMinesweeper);
 };
 
