@@ -33,25 +33,26 @@ void MinesweeperAI::update()
 		return;
 	}
 
-	//auto gameStatus = _pMinesweeper->GetGameStatus();
+	auto gameStatus = _pMinesweeper->GetGameStatus();
 
-	//switch (gameStatus)
-	//{
-	//case Minesweeper::GameStatus::None:
-	//	break;
-	//case Minesweeper::GameStatus::Start:
-	//	break;
-	//case Minesweeper::GameStatus::Playing:
-	//	break;
-	//case Minesweeper::GameStatus::GameClear:
-	//	break;
-	//case Minesweeper::GameStatus::GameOver:
-	//	break;
-	//default:
-	//	break;
-	//}
+	switch (gameStatus)
+	{
+	case Minesweeper::GameStatus::None:
+		break;
+	case Minesweeper::GameStatus::Start:
+		break;
+	case Minesweeper::GameStatus::Playing:
+		break;
+	case Minesweeper::GameStatus::GameClear:
+		break;
+	case Minesweeper::GameStatus::GameOver:
+		break;
+	default:
+		break;
+	}
 
-	//const auto& cellStatus = _pMinesweeper->GetCellStatus();
+	const auto& cellStatus = _pMinesweeper->GetCellStatus();
+	double elapsedTime = _pMinesweeper->GetElapsedTimeMsec();
 }
 
 /// <summary>

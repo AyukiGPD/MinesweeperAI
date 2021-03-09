@@ -64,6 +64,12 @@ private:
 
 	bool _isHumanPlay;
 
+	float _frameRate;
+
+	std::chrono::system_clock::time_point _startTime;
+	double _elapsedTimeMsec;
+	std::string _displayTime;
+
 public:
 	/// <summary>
 	/// コンストラクタ
@@ -148,6 +154,11 @@ public:
 	/// <param name="isHuman"></param>
 	void SetIsHumanPlay(bool isHuman);
 
+	/// <summary>
+	/// 経過時間(msec)
+	/// </summary>
+	/// <returns></returns>
+	double GetElapsedTimeMsec() const;
 private:
 	/// <summary>
 	/// 周囲の爆弾カウント
@@ -202,5 +213,10 @@ private:
 	/// 爆弾セット
 	/// </summary>
 	void SetBomb();
+
+	/// <summary>
+	/// ゲーム開始
+	/// </summary>
+	void GameStart();
 };
 

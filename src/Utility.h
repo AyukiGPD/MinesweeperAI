@@ -1,4 +1,5 @@
 #pragma once
+#include <string>
 
 namespace Utility
 {
@@ -29,6 +30,12 @@ namespace Utility
 	/// <returns></returns>
 	int IndexCall(int x, int y, int paramMaxX);
 
+	/// <summary>
+	/// msec ¨ •¶š—ñ
+	/// </summary>
+	/// <param name="msec"></param>
+	/// <returns></returns>
+	std::string MsecToTimeString(double msec);
 
 }	// namespace Utility
 

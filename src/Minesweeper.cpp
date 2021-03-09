@@ -13,7 +13,9 @@ Minesweeper::Minesweeper()
 , _gameStatus(Minesweeper::GameStatus::None)
 , _hoverIndex(-1)
 , _isHumanPlay(true)
+, _frameRate(0.f)
 {
+	_displayTime = Utility::MsecToTimeString(0);
 }
 
 /// <summary>
@@ -43,7 +45,16 @@ void Minesweeper::setup()
 /// </summary>
 void Minesweeper::update()
 {
+	_frameRate = ofGetFrameRate();
 
+	if (_gameStatus == GameStatus::Playing)
+	{
+		auto now = std::chrono::system_clock::now();
+		auto dur = now - _startTime;
+		auto msec = std::chrono::duration_cast<std::chrono::milliseconds>(dur).count();
+		_elapsedTimeMsec = msec;
+		_displayTime = Utility::MsecToTimeString(msec);
+	}
 }
 
 /// <summary>
@@ -140,16 +151,23 @@ void Minesweeper::draw()
 	switch (_gameStatus)
 	{
 	case GameStatus::GameOver:
-		ofSetColor(ofColor::white);
-		_font.drawString("GameOver", xSize + 32, 64);
+		ofSetColor(ofColor::orange);
+		_font.drawString("GameOver", xSize + 32, 128);
 		break;
 	case GameStatus::GameClear:
-		ofSetColor(ofColor::white);
-		_font.drawString("GameClear", xSize + 32, 64);
+		ofSetColor(ofColor::aqua);
+		_font.drawString("GameClear", xSize + 32, 128);
 		break;
 	default:
 		break;
 	}
+
+
+	ofSetColor(ofColor::white);
+	_font.drawString(_displayTime, xSize + 32, 64);
+
+	_font.drawString("FPS:" + std::to_string(_frameRate), xSize + 32, ySize - 16);
+
 }
 
 /// <summary>
@@ -259,6 +277,7 @@ void Minesweeper::SetMinesweeper(int width, int height, int bombCount)
 	CellStatus status;
 	_cells.assign(cellCount, status);
 	_gameStatus = GameStatus::Start;
+	_displayTime = Utility::MsecToTimeString(0);
 }
 
 /// <summary>
@@ -322,6 +341,11 @@ void Minesweeper::SetIsHumanPlay(bool isHuman)
 {
 	_isHumanPlay = isHuman;
 	_hoverIndex = -1;
+}
+
+double Minesweeper::GetElapsedTimeMsec() const
+{
+	return _elapsedTimeMsec;
 }
 
 
@@ -454,10 +478,11 @@ void Minesweeper::OpenCell(int index)
 {
 	if (_gameStatus == GameStatus::Start)
 	{
-		// TODO 時間計測開始
+		// 最初に開けた場所
 		InitializeOpenCell(index);
-		SetBomb();
-		_gameStatus = GameStatus::Playing;
+
+		// ゲーム開始
+		GameStart();
 	}
 
 	auto& cell = _cells[index];
@@ -660,5 +685,15 @@ void Minesweeper::SetBomb()
 			AddBombCount(x, y - 1);
 		}
 	}
+}
+
+/// <summary>
+/// ゲーム開始
+/// </summary>
+void Minesweeper::GameStart()
+{
+	SetBomb();
+	_gameStatus = GameStatus::Playing;
+	_startTime = std::chrono::system_clock::now();
 }
 
