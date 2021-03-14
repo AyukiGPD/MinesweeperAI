@@ -8,6 +8,7 @@ class MinesweeperAI : public ofBaseApp
 private:
 	Minesweeper* _pMinesweeper;
 
+	int _gameEndCount;
 
 public:
 	/// <summary>

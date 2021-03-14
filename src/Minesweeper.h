@@ -1,6 +1,7 @@
 #pragma once
 #include "Include.h"
 
+
 class Minesweeper : public ofBaseApp
 {
 public:
@@ -159,6 +160,18 @@ public:
 	/// </summary>
 	/// <returns></returns>
 	double GetElapsedTimeMsec() const;
+
+	/// <summary>
+	/// 横のセル数
+	/// </summary>
+	/// <returns></returns>
+	int GetWidth() const;
+
+	/// <summary>
+	/// 縦のセル数
+	/// </summary>
+	/// <returns></returns>
+	int GetHeight() const;
 private:
 	/// <summary>
 	/// 周囲の爆弾カウント

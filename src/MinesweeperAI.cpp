@@ -1,11 +1,15 @@
 #include "MinesweeperAI.h"
 #include "Minesweeper.h"
 
+#include <sqlite/sqlite3.h>
+#pragma comment(lib, "sqlite3.lib")
+
 /// <summary>
 /// コンストラクタ
 /// </summary>
 MinesweeperAI::MinesweeperAI()
 	: _pMinesweeper(nullptr)
+	, _gameEndCount(0)
 {
 }
 
@@ -21,6 +25,20 @@ MinesweeperAI::~MinesweeperAI()
 /// </summary>
 void MinesweeperAI::setup()
 {
+	sqlite3* db;
+
+	// open db connection
+	int rtn = sqlite3_open_v2("test_bench.db", &db, SQLITE_OPEN_CREATE | SQLITE_OPEN_READWRITE, nullptr);
+	if (rtn != SQLITE_OK)
+	{
+		cerr << sqlite3_errmsg(db) << endl;
+	}
+
+	/* exec query */
+
+	// close db connection 
+	sqlite3_close_v2(db);
+
 }
 
 /// <summary>

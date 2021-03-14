@@ -348,6 +348,24 @@ double Minesweeper::GetElapsedTimeMsec() const
 	return _elapsedTimeMsec;
 }
 
+/// <summary>
+/// 横のセル数
+/// </summary>
+/// <returns></returns>
+int Minesweeper::GetWidth() const
+{
+	return _width;
+}
+
+/// <summary>
+/// 縦のセル数
+/// </summary>
+/// <returns></returns>
+int Minesweeper::GetHeight() const
+{
+	return _height;
+}
+
 
 /// <summary>
 /// 周囲の爆弾カウント
